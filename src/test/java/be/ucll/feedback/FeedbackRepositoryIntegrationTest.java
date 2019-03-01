@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 // Needed for testing the persistence layer
+// Here using the in-memory DB H2
 @DataJpaTest
 public class FeedbackRepositoryIntegrationTest {
 

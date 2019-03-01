@@ -22,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
+// Bootstraps the controller and auto-configures MockMvc, this are testing controllers
+// without starting a full HTTP server
 @WebMvcTest(FeedbackController.class)
 public class FeedbackRestControllerUnitTest {
 
@@ -57,7 +59,7 @@ public class FeedbackRestControllerUnitTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content("{\"name\": \"Yuki\", \"feedback\": \"OKOKOK\"}"))
-                .andDo(print())
+                .andDo(print()) // with this you print the request and response
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].feedback").value(ok.getFeedback()));

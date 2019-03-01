@@ -22,6 +22,7 @@ public class FeedbackServiceUnitTest {
     @TestConfiguration
     static class FeedbackServiceTestContextConfiguration {
 
+        // Creates an instance of service in order to be able to autowire it
         @Bean
         public FeedbackService feedbackService() {
             return new FeedbackService();
@@ -31,6 +32,9 @@ public class FeedbackServiceUnitTest {
     @Autowired
     private FeedbackService feedbackService;
 
+    // Service is dependent of Repository, however implementation of Repository is
+    // not important => therefor mock it
+    // Mock support of Spring Boot Test
     @MockBean
     private FeedbackRepository feedbackRepository;
 
@@ -38,6 +42,8 @@ public class FeedbackServiceUnitTest {
     public void setUp() {
         Feedback ok = new Feedback("Elke", "OK");
 
+        // When we ask at the repo for the ok feedback, it will return it
+        // Mock
         Mockito.when(feedbackRepository.findFeedbackByName(ok.getName())).thenReturn(ok);
     }
 
