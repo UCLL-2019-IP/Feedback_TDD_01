@@ -15,12 +15,10 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     @NotEmpty
     @Size(min=2, max=30)
     private String name;
 
-    @NotNull
     @NotEmpty
     @Size(min=5, max=80)
     private String feedback;

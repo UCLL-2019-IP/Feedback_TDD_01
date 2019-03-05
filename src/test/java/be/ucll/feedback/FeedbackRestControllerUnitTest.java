@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FeedbackRestControllerUnitTest {
 
     @Autowired
-    private MockMvc mvc;
+    private MockMvc feedbackController;
 
     @MockBean
     private FeedbackService service;
@@ -36,11 +36,11 @@ public class FeedbackRestControllerUnitTest {
     @Test
     public void givenTwoFeedbacks_whenGetFeedbacks_thenReturnJsonArray() throws Exception {
 
-        Feedback ok = new Feedback("Elke", "OK well done!");
+        Feedback ok = FeedbackBuilder.anOKFeedback().build();
         Feedback nok = new Feedback("Miyo", "NOK you need to do that again");
         when(service.findAll()).thenReturn(Arrays.asList(ok, nok));
 
-        mvc.perform(get("/feedbacks")
+        feedbackController.perform(get("/feedbacks")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -52,14 +52,14 @@ public class FeedbackRestControllerUnitTest {
 
     @Test
     public void givenNoFeedbacks_whenAddFeedback_thenReturnJsonArray() throws Exception {
-        Feedback ok = new Feedback("Yuki", "OKOKOK");
+        Feedback ok = FeedbackBuilder.anOKFeedback().build();
         when(service.findAll()).thenReturn(Arrays.asList(ok));
 
-        mvc.perform(post("/feedbacks/add")
+        feedbackController.perform(post("/feedbacks/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content("{\"name\": \"Yuki\", \"feedback\": \"OKOKOK\"}"))
-                .andDo(print()) // with this you print the request and response
+                .content("{\"name\": \"Elke\", \"feedback\": \"OK well done!\"}"))
+                //.andDo(print()) // with this you print the request and response
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].feedback").value(ok.getFeedback()));
@@ -67,12 +67,13 @@ public class FeedbackRestControllerUnitTest {
 
     @Test
     public void givenNoFeedbacks_whenAddFeedbackWithNoValidFeedback_thenReturnJsonArray() throws Exception {
-        mvc.perform(post("/feedbacks/add")
+        feedbackController.perform(post("/feedbacks/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content("{\"name\": \"Yuki\", \"feedback\": \"OK\"}"))
-                .andDo(print())
+                //.andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("size must be between 5 and 80"));
     }
+
 }

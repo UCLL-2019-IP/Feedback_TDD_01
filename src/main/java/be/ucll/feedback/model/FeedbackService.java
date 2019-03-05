@@ -20,7 +20,8 @@ public class FeedbackService {
         return feedbackRepo.findFeedbackByName(name);
     }
 
-    public void add(Feedback feedback) {
+    public Feedback add(Feedback feedback) {
         feedbackRepo.save(feedback);
+        return feedback;
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class FeedbackControllerIntegrationTest {
+public class FeedbackRealIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -35,7 +35,7 @@ public class FeedbackControllerIntegrationTest {
         ResponseEntity<String> response = restTemplate.exchange(createURLWithPort("/feedbacks/add"), HttpMethod.POST, entity, String.class);
 
         String jsonInBodyResponse = "[{ 'id': 1, 'name': 'Elke', 'feedback': 'OK well done!'}]";
-        JSONAssert.assertEquals(jsonInBodyResponse, response.getBody(), false);
+        JSONAssert.assertEquals(jsonInBodyResponse, response.getBody(), true);
     }
 
     private String createURLWithPort(String uri) {

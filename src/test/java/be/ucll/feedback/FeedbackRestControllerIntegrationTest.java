@@ -2,8 +2,6 @@ package be.ucll.feedback;
 
 import be.ucll.feedback.model.Feedback;
 import be.ucll.feedback.repository.FeedbackRepository;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FeedbackRestControllerIntegrationTest {
 
     @Autowired
-    private MockMvc mvc;
+    private MockMvc feedbackController;
 
     @Autowired
     private FeedbackRepository repository;
@@ -37,7 +35,7 @@ public class FeedbackRestControllerIntegrationTest {
     public void givenFeedbacks_whenGetFeedbacks_thenStatus200AndJSONofFeedbacks() throws Exception {
         createTestFeedback("Elke", "OK well done!!!");
 
-        mvc.perform(get("/feedbacks")
+        feedbackController.perform(get("/feedbacks")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -49,7 +47,7 @@ public class FeedbackRestControllerIntegrationTest {
     @Test
     public void givenNoFeedbacks_whenAddFeedback_thenStatus200AndJSONofFeedbacks() throws Exception {
 
-        mvc.perform(post("/feedbacks/add")
+        feedbackController.perform(post("/feedbacks/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content("{\"name\": \"Yuki\", \"feedback\": \"OKOKOK\"}"))
@@ -62,7 +60,7 @@ public class FeedbackRestControllerIntegrationTest {
     @Test
     public void givenNoFeedbacks_whenAddInvalidFeedback_thenStatus404AndErrorMessage() throws Exception {
 
-        mvc.perform(post("/feedbacks/add")
+        feedbackController.perform(post("/feedbacks/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content("{\"name\": \"Yuki\", \"feedback\": \"OK\"}"))

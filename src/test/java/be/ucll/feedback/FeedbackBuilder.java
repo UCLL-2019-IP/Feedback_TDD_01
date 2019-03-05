@@ -15,7 +15,7 @@ public class FeedbackBuilder {
     }
 
     public static FeedbackBuilder anOKFeedback () {
-        return aFeedback().withName("Elke").withFeedback("OK well done!!!");
+        return aFeedback().withName("Elke").withFeedback("OK well done!");
     }
 
     public FeedbackBuilder withName (String name) {

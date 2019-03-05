@@ -27,7 +27,7 @@ public class FeedbackRepositoryIntegrationTest {
     private FeedbackRepository feedbackRepository;
 
     @Test
-    public void whenFindAll_thenReturnAllFeedback() {
+    public void should_get_all_feedbacks () {
         // given
         Feedback ok = FeedbackBuilder.anOKFeedback().build();
         // puts objects into the in-memory DB
@@ -48,7 +48,7 @@ public class FeedbackRepositoryIntegrationTest {
     }
 
     @Test
-    public void whenFindByName_thenReturnFeedback() {
+    public void should_find_feedback_by_given_name () {
         // given
         Feedback ok = new Feedback("Elke", "OK well done");
         entityManager.persist(ok);
@@ -60,5 +60,18 @@ public class FeedbackRepositoryIntegrationTest {
         // then
         assertThat(found.getName()).isEqualTo(ok.getName());
         assertThat(found.getFeedback()).isEqualTo(ok.getFeedback());
+    }
+
+    @Test
+    public void should_add_feedback () {
+        // given
+        Feedback ok = new Feedback("Elke", "OK well done");
+
+        // when
+        Feedback addedFeedback = feedbackRepository.save(ok);
+
+        // then
+        assertThat(addedFeedback.getName()).isEqualTo("Elke");
+        assertThat(addedFeedback.getFeedback()).isEqualTo("OK well done");
     }
 }
